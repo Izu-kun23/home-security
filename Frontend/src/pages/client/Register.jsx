@@ -32,76 +32,76 @@ const RegisterPage = () => {
 
   return (
     <div className="flex justify-center items-center min-h-[80vh] mt-[-40px] bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-bold text-center mb-4">Create an Account</h2>
+      <div className="bg-white p-10 rounded-2xl shadow-xl w-[500px]">
+        <h2 className="text-3xl font-bold text-center mb-6 text-black">Create an Account</h2>
 
         {success && <p className="text-green-500 text-center mb-4">User registered successfully!</p>}
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
 
         <form onSubmit={handleRegister}>
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-600">Full Name</label>
+          <div className="mb-5">
+            <label className="block text-base font-medium text-gray-600">Full Name</label>
             <input
               type="text"
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md mt-1 text-black"
+              className="w-full p-3 border border-gray-300 rounded-lg mt-1 text-black"
               required
             />
           </div>
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-600">Phone Number</label>
+          <div className="mb-5">
+            <label className="block text-base font-medium text-gray-600">Phone Number</label>
             <input
               type="tel"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md mt-1 text-black"
+              className="w-full p-3 border border-gray-300 rounded-lg mt-1 text-black"
               required
             />
           </div>
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-600">Email</label>
+          <div className="mb-5">
+            <label className="block text-base font-medium text-gray-600">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md mt-1 text-black"
+              className="w-full p-3 border border-gray-300 rounded-lg mt-1 text-black"
               required
             />
           </div>
 
-          <div className="mb-4 relative">
-            <label className="block text-sm font-medium text-gray-600">Password</label>
+          <div className="mb-5 relative">
+            <label className="block text-base font-medium text-gray-600">Password</label>
             <input
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md mt-1 text-black"
+              className="w-full p-3 border border-gray-300 rounded-lg mt-1 text-black"
               required
             />
             <button
               type="button"
-              className="absolute right-2 top-9 text-sm text-gray-500"
+              className="absolute right-3 top-[50%] transform -translate-y-1/2 text-sm text-gray-500"
               onClick={() => setShowPassword(!showPassword)}
             >
               {showPassword ? "Hide" : "Show"}
             </button>
           </div>
 
-          <div className="mb-4 relative">
-            <label className="block text-sm font-medium text-gray-600">Confirm Password</label>
+          <div className="mb-5 relative">
+            <label className="block text-base font-medium text-gray-600">Confirm Password</label>
             <input
               type={showConfirm ? "text" : "password"}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md mt-1 text-black"
+              className="w-full p-3 border border-gray-300 rounded-lg mt-1 text-black"
               required
             />
             <button
               type="button"
-              className="absolute right-2 top-9 text-sm text-gray-500"
+              className="absolute right-3 top-[50%] transform -translate-y-1/2 text-sm text-gray-500"
               onClick={() => setShowConfirm(!showConfirm)}
             >
               {showConfirm ? "Hide" : "Show"}
@@ -110,16 +110,16 @@ const RegisterPage = () => {
 
           <button
             type="submit"
-            className="w-full p-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700"
+            className="w-full p-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-300"
           >
             Register
           </button>
         </form>
 
-        <div className="mt-4 text-center">
-          <p className="text-sm">
+        <div className="mt-6 text-center">
+          <p className="text-sm text-black">
             Already have an account?{" "}
-            <a href="/login" className="text-blue-600 hover:underline">Log in</a>
+            <a href="/login" className="text-blue-600 hover:underline font-medium ">Log in</a>
           </p>
         </div>
       </div>

@@ -13,6 +13,10 @@ import Footer from "../components/Footer";
 import Sidebar from "../components/AdminSidebar"; // Import Sidebar
 import AdminHeader from "../components/AdminHeader"; // Import AdminHeader
 import Products from "./pages/admin/Products";
+import AddProducts from "./pages/admin/AddProducts";
+import Category from "./pages/admin/Category";
+import AddCategory from "./pages/admin/AddCategory";
+import AllProducts from "./pages/client/AllProducts";
 
 const AppLayout = () => {
   const location = useLocation();
@@ -39,6 +43,12 @@ const AppLayout = () => {
             <Route path="/admin-dashboard" element={<Dashboard />} />
             {/* Add more admin routes as needed */}
             <Route path="/admin/products" element={<Products />} />
+            <Route path="/admin/category" element={<Category />} />
+            <Route path="/admin/add-products" element={<AddProducts />} />
+            <Route path="/admin/add-category" element={<AddCategory />} />
+            
+
+
             {/* <Route path="/admin/users" element={<Users />} /> */}
           </Routes>
         </main>
@@ -49,12 +59,14 @@ const AppLayout = () => {
           {!isAuthPage && <Header />}
           {!isAuthPage && <Navbar />}
 
-          <div className={path === "/" ? "pt-0 flex-grow" : "pt-10 flex-grow"}>
+          <div className={path === "/" ? "pt-0 flex-grow" : " flex-grow"}>
+
             {/* Client routes */}
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/all-products" element={<AllProducts />} />
               {/* Add more client routes if needed */}
             </Routes>
           </div>

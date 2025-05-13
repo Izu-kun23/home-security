@@ -6,6 +6,7 @@ import {
   FiBox,
   FiSettings,
   FiArrowLeft,
+  FiInbox
 } from "react-icons/fi";
 import secureLogo from "../src/assets/secure.png"; // Adjust path if necessary
 
@@ -41,17 +42,6 @@ const AdminSidebar = () => {
             Dashboard
           </NavLink>
 
-          {/* Users Link */}
-          <NavLink
-            to="/admin-dashboard/users"
-            className={({ isActive }) =>
-              `${baseLink} ${isActive ? activeStyle : ""} ${hoverStyle}`
-            }
-          >
-            <FiUsers className="text-xl" />
-            Users
-          </NavLink>
-
           {/* Products Link */}
           <NavLink
             to="/admin/products"
@@ -61,6 +51,28 @@ const AdminSidebar = () => {
           >
             <FiBox className="text-xl" />
             Products
+          </NavLink>
+
+          {/* Category Link */}
+          <NavLink
+            to="/admin/category"
+            className={({ isActive }) =>
+              `${baseLink} ${isActive ? activeStyle : ""} ${hoverStyle}`
+            }
+          >
+            <FiInbox className="text-xl" />
+            Categories
+          </NavLink>
+
+          {/* Users Link */}
+          <NavLink
+            to="/admin-dashboard/users"
+            className={({ isActive }) =>
+              `${baseLink} ${isActive ? activeStyle : ""} ${hoverStyle}`
+            }
+          >
+            <FiUsers className="text-xl" />
+            Users
           </NavLink>
 
           {/* Settings Link */}

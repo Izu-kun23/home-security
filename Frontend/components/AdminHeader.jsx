@@ -1,6 +1,7 @@
 import React, { useState } from "react"; // Ensure useState is imported
 import { useNavigate } from "react-router-dom";
 import HamburgerIcon from "../src/assets/hamburger.svg"; // Adjust path if necessary
+
 const AdminHeader = () => {
   const [searchQuery, setSearchQuery] = useState(""); // State for the search input
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const AdminHeader = () => {
   };
 
   return (
-    <div className="bg-black text-white py-2 fixed top-0 left-[250px] right-0 z-10 shadow-lg">
+    <div className="bg-black text-white py-1 pb-3 fixed top-0 left-[250px] right-0 z-10 shadow-lg">
       <div className="flex justify-between items-center h-20 px-10">
         {/* Logo */}
         <div className="flex items-center gap-4 ">

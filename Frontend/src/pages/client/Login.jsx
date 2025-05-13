@@ -24,12 +24,12 @@ const Login = () => {
 
   return (
     <div className="flex justify-center items-center min-h-[80vh] mt-[-40px] bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-bold text-center mb-4">Login</h2>
+      <div className="bg-white p-10 rounded-2xl shadow-xl w-[500px]">
+        <h2 className="text-3xl font-bold text-center mb-6 text-black">Login</h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <form onSubmit={handleLogin}>
-          <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-600">
+          <div className="mb-5">
+            <label htmlFor="email" className="block text-base font-medium text-gray-600">
               Email
             </label>
             <input
@@ -37,13 +37,13 @@ const Login = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md mt-1 text-black"
+              className="w-full p-3 border border-gray-300 rounded-lg mt-1 text-black text-base"
               required
             />
           </div>
 
-          <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-600">
+          <div className="mb-5">
+            <label htmlFor="password" className="block text-base font-medium text-gray-600">
               Password
             </label>
             <input
@@ -51,22 +51,25 @@ const Login = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-md mt-1 text-black"
+              className="w-full p-3 border border-gray-300 rounded-lg mt-1 text-black text-base"
               required
             />
           </div>
 
           <button
             type="submit"
-            className="w-full p-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700"
+            className="w-full p-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition duration-300"
           >
             Log In
           </button>
         </form>
 
-        <div className="mt-4 text-center">
-          <p className="text-sm">
-            Don't have an account? <a href="/register" className="text-blue-600">Sign up</a>
+        <div className="mt-6 text-center">
+          <p className="text-sm text">
+            Don't have an account?{" "}
+            <a href="/register" className="text-blue-600 font-medium hover:underline">
+              Sign up
+            </a>
           </p>
         </div>
       </div>
