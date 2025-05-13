@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword,
   signOut
 } from "firebase/auth";
-import { doc, setDoc, collection, addDoc, getDocs, query, where } from "firebase/firestore"; // Import Firestore methods
+import { doc, setDoc, collection, addDoc, getDocs, getDoc, query, where } from "firebase/firestore"; // Import Firestore methods
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "./firebaseconfig"; // Adjust the path as necessary
 
@@ -102,6 +102,38 @@ export const fetchCategories = async () => {
   } catch (error) {
     console.error("Error fetching categories:", error);
     throw new Error("Failed to fetch categories");
+  }
+};
+
+
+
+export const fetchProductsByCategory = async (categoryId) => {
+  try {
+    const q = query(
+      collection(db, 'products'),
+      where('categoryId', '==', categoryId)
+    );
+    const querySnapshot = await getDocs(q);
+    const products = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+    return products;
+  } catch (error) {
+    console.error('Error fetching products by category:', error);
+    return [];
+  }
+};
+
+// Fetch Product by ID
+
+export const fetchCategoryById = async (id) => {
+  const ref = doc(db, "categories", id);
+  const snapshot = await getDoc(ref);
+  if (snapshot.exists()) {
+    return { id: snapshot.id, ...snapshot.data() };
+  } else {
+    return { name: "Unknown Category" };
   }
 };
 
