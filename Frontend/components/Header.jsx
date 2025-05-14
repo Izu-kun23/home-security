@@ -1,15 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import secureImage from '../src/assets/secure.png'; // adjust path if needed
-
+import Homelogo from '../src/assets/Homelogo.png'; // Adjust the path as necessary
 const Header = () => {
   return (
     <header className="w-full h-14 bg-black flex justify-center items-center overflow-hidden">
       <Link to="/">
         <img
-          src={secureImage}
-          alt="Security"
-          className="h-45 object-contain cursor-pointer"
+          src={Homelogo}
+          alt="logo"
+          className="h-60 object-contain cursor-pointer"
         />
       </Link>
     </header>

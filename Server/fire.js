@@ -6,7 +6,7 @@ import {
   signInWithEmailAndPassword,
   signOut
 } from "firebase/auth";
-import { doc, setDoc, collection, addDoc, getDocs, getDoc, query, where } from "firebase/firestore"; // Import Firestore methods
+import { doc, setDoc, collection, addDoc, getDocs, getDoc, query, where, updateDoc } from "firebase/firestore"; // Import Firestore methods
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "./firebaseconfig"; // Adjust the path as necessary
 
@@ -134,6 +134,33 @@ export const fetchCategoryById = async (id) => {
     return { id: snapshot.id, ...snapshot.data() };
   } else {
     return { name: "Unknown Category" };
+  }
+};
+
+export const editCategory = async (categoryId, updatedData, imageFile = null) => {
+  try {
+    let imageUrl = updatedData.image || "";
+
+    if (imageFile) {
+      const storageRef = ref(storage, `categories/${Date.now()}_${imageFile.name}`);
+      await uploadBytes(storageRef, imageFile);
+      imageUrl = await getDownloadURL(storageRef);
+    }
+
+    const updatedFields = {
+      ...updatedData,
+      ...(imageUrl && { image: imageUrl }), // replaces image only if new image is provided
+      updatedAt: new Date().toISOString(),
+    };
+
+    const categoryRef = doc(db, "categories", categoryId);
+    await updateDoc(categoryRef, updatedFields);
+
+    console.log("Category updated successfully");
+    return true;
+  } catch (error) {
+    console.error("Error updating category:", error);
+    throw new Error("Failed to update category");
   }
 };
 

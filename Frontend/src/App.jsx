@@ -21,6 +21,8 @@ import AddProducts from "./pages/admin/AddProducts";
 import Category from "./pages/admin/Category";
 import AddCategory from "./pages/admin/AddCategory";
 import AllProducts from "./pages/client/AllProducts";
+import AboutUs from "./pages/client/AboutUs";
+import Faqs from "./pages/client/Faqs";
 
 const AppLayout = () => {
   const location = useLocation();
@@ -56,6 +58,9 @@ const AppLayout = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/all-products" element={<AllProducts />} />
+              <Route path="/about-us" element={<AboutUs />} />
+              <Route path="/support/faqs" element={<Faqs />} />
+
             </Routes>
           </div>
 

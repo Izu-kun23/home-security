@@ -8,7 +8,7 @@ import {
   FiArrowLeft,
   FiInbox
 } from "react-icons/fi";
-import secureLogo from "../src/assets/secure.png"; // Adjust path if necessary
+import Homelogo from '../src/assets/Homelogo.png'; // Adjust the path as necessary
 
 const AdminSidebar = () => {
   const baseLink =
@@ -22,8 +22,8 @@ const AdminSidebar = () => {
         {/* Logo at the top */}
         <div className="relative h-[70px] flex justify-center items-center overflow-hidden mb-9">
           <img
-            src={secureLogo}
-            alt="Security"
+            src={Homelogo}
+            alt="logo"
             className="w-[210px] object-contain"
           />
         </div>
