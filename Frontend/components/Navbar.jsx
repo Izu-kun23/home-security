@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { FaSearch, FaChevronDown, FaCartPlus, FaBars, FaTimes } from "react-icons/fa";
+import {
+  FaChevronDown,
+  FaCartPlus,
+  FaBars,
+  FaTimes,
+} from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../../Server/utils/useAuth";
 import {
@@ -39,9 +44,22 @@ const Navbar = () => {
     loadCategories();
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 640) {
+        setMobileMenuOpen(false);
+        setShopDropdownVisible(false);
+        setSupportDropdownVisible(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const handleLogout = async () => {
     await logoutUser();
     setUserDropdownVisible(false);
+    setMobileMenuOpen(false);
   };
 
   const handleCategoryHover = async (categoryId) => {
@@ -55,193 +73,259 @@ const Navbar = () => {
   };
 
   const navLinkStyle =
-    "text-gray-400 hover:text-white text-lg font-bold px-6 py-4 transition-colors duration-200";
+    "text-gray-300 hover:text-white font-semibold px-4 py-2 rounded transition";
 
   if (loading) return null;
 
   return (
-    <nav className="w-full bg-black shadow-md px-4 py-3 flex flex-col sm:flex-row justify-between items-center z-50 relative">
-      {/* Top bar: Cart and Hamburger */}
-      <div className="flex justify-between items-center w-full sm:w-auto">
-        {/* Cart icon */}
-        <button
-          onClick={() => navigate("/cart")}
-          className="text-gray-400 hover:text-white text-3xl pl-3 relative"
-          aria-label="Cart"
-        >
-          <FaCartPlus />
-          {cartCount > 0 && (
-            <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">
-              {cartCount}
-            </span>
-          )}
-        </button>
-
-        {/* Hamburger for mobile */}
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="text-gray-400 hover:text-white text-3xl sm:hidden focus:outline-none"
-          aria-label="Toggle Menu"
-        >
-          {mobileMenuOpen ? <FaTimes /> : <FaBars />}
-        </button>
-      </div>
-
-      {/* Navigation Links */}
-      <div
-        className={`flex flex-col sm:flex-row justify-center gap-4 sm:gap-6 text-md font-medium text-gray-400 w-full sm:w-auto mt-3 sm:mt-0 transition-all duration-300 ease-in-out overflow-hidden ${
-          mobileMenuOpen ? "max-h-screen" : "max-h-0 sm:max-h-full"
-        }`}
-      >
-        {/* Shop */}
-        <div
-          className="relative"
-          onMouseEnter={() => !mobileMenuOpen && setShopDropdownVisible(true)}
-          onMouseLeave={() => !mobileMenuOpen && setShopDropdownVisible(false)}
-        >
-          <div
-            onClick={() => {
-              if (mobileMenuOpen) setShopDropdownVisible(!shopDropdownVisible);
-              else navigate("/all-products");
-            }}
-            className={`${navLinkStyle} cursor-pointer flex items-center select-none`}
-          >
-            Shop <FaChevronDown className="inline-block ml-1 text-xs" />
-          </div>
-
-          {shopDropdownVisible && (
-            <div className="absolute left-0 top-full bg-white text-black shadow-md w-64 rounded-b-md z-40 p-4">
-              {/* Categories List */}
-              <div className="flex flex-col gap-2 border-b pb-2 mb-2 max-h-40 overflow-y-auto">
-                {categories.map((category) => (
-                  <div
-                    key={category.id}
-                    onClick={() => handleCategoryHover(category.id)}
-                    className={`flex items-center cursor-pointer px-2 py-1 rounded hover:bg-gray-100 ${
-                      activeCategoryId === category.id ? "bg-gray-100" : ""
-                    }`}
-                  >
-                    <img
-                      src={category.image}
-                      alt={category.name}
-                      className="w-8 h-8 object-cover rounded-full mr-2"
-                    />
-                    <span className="text-sm font-medium text-gray-800">
-                      {category.name}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Products */}
-              <div>
-                {categoryProducts.length > 0 ? (
-                  <ul className="flex flex-col gap-2 max-h-40 overflow-y-auto">
-                    {categoryProducts.map((product) => (
-                      <li key={product.id} className="text-sm text-gray-700 hover:underline cursor-pointer">
-                        <a href={`/product/${product.id}`}>{product.name}</a>
-                      </li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-sm text-gray-500 mt-2">Select a category to see products.</p>
-                )}
-              </div>
-            </div>
-          )}
-        </div>
-
-        <a href="/solutions" className={navLinkStyle}>
-          Solutions
-        </a>
-
-        {/* Support */}
-        <div
-          className="relative"
-          onMouseEnter={() => !mobileMenuOpen && setSupportDropdownVisible(true)}
-          onMouseLeave={() => !mobileMenuOpen && setSupportDropdownVisible(false)}
-        >
-          <div
-            onClick={() =>
-              mobileMenuOpen && setSupportDropdownVisible(!supportDropdownVisible)
-            }
-            className={`${navLinkStyle} cursor-pointer flex items-center select-none`}
-          >
-            Support <FaChevronDown className="inline-block ml-1 text-xs" />
-          </div>
-
-          {supportDropdownVisible && (
-            <div className="absolute left-0 top-full bg-white text-black shadow-md w-48 rounded-b-md z-40 p-4">
-              <a
-                href="/support/how-it-works"
-                className="block px-3 py-2 rounded hover:bg-gray-100 text-sm text-gray-800"
-              >
-                How It Works
-              </a>
-              <a
-                href="/support/faqs"
-                className="block px-3 py-2 rounded hover:bg-gray-100 text-sm text-gray-800"
-              >
-                FAQs
-              </a>
-            </div>
-          )}
-        </div>
-
-        <a href="/about-us" className={navLinkStyle}>
-          About Us
-        </a>
-        <a href="/build" className={navLinkStyle}>
-          Build Your System
-        </a>
-        <a href="/quote" className={navLinkStyle}>
-          Get a Quote
-        </a>
-      </div>
-
-      {/* Right: User dropdown or login */}
-      <div className="mt-4 sm:mt-0">
-        {user ? (
-          <div className="relative">
+    <nav className="bg-black text-gray-300 shadow-md sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col sm:flex-row justify-between items-center h-16">
+          {/* Left Section: Cart and Hamburger */}
+          <div className="flex items-center justify-between w-full sm:w-auto">
             <button
-              onClick={() => setUserDropdownVisible(!userDropdownVisible)}
-              className="text-gray-400 hover:text-white text-lg font-bold px-5 py-3 transition-colors duration-200 flex items-center select-none"
+              onClick={() => {
+                navigate("/cart");
+                setMobileMenuOpen(false);
+              }}
+              aria-label="Go to Cart"
+              className="relative text-gray-300 hover:text-white text-3xl"
             >
-              {user.fullName || user.email}
-              <FaChevronDown
-                className={`ml-2 transition-transform duration-200 ${
-                  userDropdownVisible ? "rotate-180" : ""
-                }`}
-              />
+              <FaCartPlus />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-2 bg-red-600 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
             </button>
 
-            {userDropdownVisible && (
-              <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded shadow-md z-10">
-                {user.email === "izuchukwuonuoha6@gmail.com" && (
-                  <a
-                    href="/admin-dashboard"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    Admin Dashboard
-                  </a>
-                )}
-                <button
-                  onClick={handleLogout}
-                  className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                >
-                  Logout
-                </button>
+            {/* Mobile Hamburger */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="sm:hidden text-gray-300 hover:text-white text-3xl focus:outline-none"
+              aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? <FaTimes /> : <FaBars />}
+            </button>
+          </div>
+
+          {/* Navigation Links */}
+          <div
+            className={`${
+              mobileMenuOpen ? "flex flex-col mt-4 space-y-3" : "hidden"
+            } sm:flex sm:flex-row sm:space-x-6 sm:mt-0 sm:space-y-0 items-center w-full sm:w-auto`}
+          >
+            {/* Shop Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => !mobileMenuOpen && setShopDropdownVisible(true)}
+              onMouseLeave={() => !mobileMenuOpen && setShopDropdownVisible(false)}
+            >
+              <div
+                onClick={() => {
+                  if (mobileMenuOpen) {
+                    setShopDropdownVisible(!shopDropdownVisible);
+                  } else {
+                    navigate("/all-products");
+                    setMobileMenuOpen(false);
+                  }
+                }}
+                className={`${navLinkStyle} flex items-center cursor-pointer select-none`}
+              >
+                Shop <FaChevronDown className="ml-1 text-xs" />
               </div>
+
+              {shopDropdownVisible && (
+                <div
+                  className={`${
+                    mobileMenuOpen
+                      ? "relative bg-black text-gray-300 mt-2 rounded"
+                      : "absolute bg-white text-black mt-2 rounded shadow-lg w-64"
+                  } p-4 z-50 max-h-60 overflow-y-auto`}
+                >
+                  {/* Categories */}
+                  <div className="mb-3 border-b border-gray-500 pb-2">
+                    {categories.map((category) => (
+                      <div
+                        key={category.id}
+                        onClick={() => handleCategoryHover(category.id)}
+                        className={`flex items-center cursor-pointer px-2 py-1 rounded hover:bg-gray-200 ${
+                          activeCategoryId === category.id
+                            ? mobileMenuOpen
+                              ? "bg-gray-700"
+                              : "bg-gray-300"
+                            : ""
+                        }`}
+                      >
+                        <img
+                          src={category.image}
+                          alt={category.name}
+                          className="w-7 h-7 object-cover rounded-full mr-2"
+                        />
+                        <span className={mobileMenuOpen ? "text-gray-300" : "text-black"}>
+                          {category.name}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Products */}
+                  <div>
+                    {categoryProducts.length > 0 ? (
+                      <ul className={`${mobileMenuOpen ? "text-gray-300" : "text-black"} space-y-1 max-h-48 overflow-y-auto`}>
+                        {categoryProducts.map((product) => (
+                          <li key={product.id}>
+                            <a
+                              href={`/product/${product.id}`}
+                              className={`block px-2 py-1 rounded hover:bg-gray-300 ${
+                                mobileMenuOpen ? "hover:bg-gray-700" : ""
+                              }`}
+                              onClick={() => setMobileMenuOpen(false)}
+                            >
+                              {product.name}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className={mobileMenuOpen ? "text-gray-400" : "text-gray-600"}>
+                        Select a category to see products.
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <a
+              href="/solutions"
+              className={navLinkStyle}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Solutions
+            </a>
+
+            {/* Support Dropdown */}
+            <div
+              className="relative"
+              onMouseEnter={() => !mobileMenuOpen && setSupportDropdownVisible(true)}
+              onMouseLeave={() => !mobileMenuOpen && setSupportDropdownVisible(false)}
+            >
+              <div
+                onClick={() =>
+                  mobileMenuOpen && setSupportDropdownVisible(!supportDropdownVisible)
+                }
+                className={`${navLinkStyle} flex items-center cursor-pointer select-none`}
+              >
+                Support <FaChevronDown className="ml-1 text-xs" />
+              </div>
+
+              {supportDropdownVisible && (
+                <div
+                  className={`${
+                    mobileMenuOpen
+                      ? "relative bg-black text-gray-300 mt-2 rounded"
+                      : "absolute bg-white text-black mt-2 rounded shadow-lg w-48"
+                  } p-4 z-50`}
+                >
+                  <a
+                    href="/support/how-it-works"
+                    className={`block px-3 py-2 rounded hover:bg-gray-300 ${
+                      mobileMenuOpen ? "hover:bg-gray-700" : ""
+                    }`}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    How It Works
+                  </a>
+                  <a
+                    href="/support/faqs"
+                    className={`block px-3 py-2 rounded hover:bg-gray-300 ${
+                      mobileMenuOpen ? "hover:bg-gray-700" : ""
+                    }`}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    FAQs
+                  </a>
+                </div>
+              )}
+            </div>
+
+            <a
+              href="/about-us"
+              className={navLinkStyle}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              About Us
+            </a>
+            <a
+              href="/build"
+              className={navLinkStyle}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Build Your System
+            </a>
+            <a
+              href="/quote"
+              className={navLinkStyle}
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Get a Quote
+            </a>
+          </div>
+
+          {/* User Section */}
+          <div className="mt-4 sm:mt-0 relative">
+            {user ? (
+              <>
+                <button
+                  onClick={() => setUserDropdownVisible(!userDropdownVisible)}
+                  className="text-gray-300 hover:text-white text-lg font-semibold px-5 py-3 flex items-center rounded select-none focus:outline-none focus:ring-2 focus:ring-white"
+                >
+                  {user.fullName || user.email}
+                  <FaChevronDown
+                    className={`ml-2 transition-transform duration-200 ${
+                      userDropdownVisible ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                {userDropdownVisible && (
+                  <div className="absolute right-0 mt-2 w-40 bg-white text-black rounded shadow-md z-50">
+                    {user.email === "izuchukwuonuoha6@gmail.com" && (
+                      <a
+                        href="/admin-dashboard"
+                        className="block px-4 py-2 hover:bg-gray-200"
+                        onClick={() => setUserDropdownVisible(false)}
+                      >
+                        Admin Dashboard
+                      </a>
+                    )}
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setUserDropdownVisible(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-200"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </>
+            ) : (
+              <button
+                onClick={() => {
+                  navigate("/login");
+                  setMobileMenuOpen(false);
+                }}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded select-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                Login
+              </button>
             )}
           </div>
-        ) : (
-          <button
-            onClick={() => navigate("/login")}
-            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition select-none"
-          >
-            Login
-          </button>
-        )}
+        </div>
       </div>
     </nav>
   );
