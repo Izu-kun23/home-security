@@ -154,7 +154,11 @@ const Navbar = () => {
                         alt={category.name}
                         className="w-8 h-8 object-cover rounded-full mr-2"
                       />
-                      <span className="text-sm font-medium text-gray-800">
+                      <span
+                        className={`text-sm font-medium ${
+                          mobileMenuOpen ? "text-gray-500" : "text-gray-800"
+                        }`}
+                      >
                         {category.name}
                       </span>
                     </div>
@@ -167,7 +171,11 @@ const Navbar = () => {
                       {categoryProducts.map((product) => (
                         <li
                           key={product.id}
-                          className="text-sm text-gray-700 hover:underline cursor-pointer"
+                          className={`text-sm hover:underline cursor-pointer ${
+                            mobileMenuOpen
+                              ? "text-white hover:text-gray-300"
+                              : "text-gray-700"
+                          }`}
                         >
                           <a href={`/product/${product.id}`}>{product.name}</a>
                         </li>
@@ -217,13 +225,13 @@ const Navbar = () => {
               >
                 <a
                   href="/support/how-it-works"
-                  className="block px-3 py-2 rounded hover:bg-gray-100 text-sm"
+                  className="block px-3 py-2 rounded hover:bg-gray-100 text-sm text-gray-500"
                 >
                   How It Works
                 </a>
                 <a
                   href="/support/faqs"
-                  className="block px-3 py-2 rounded hover:bg-gray-100 text-sm"
+                  className="block px-3 py-2 rounded hover:bg-gray-100 text-sm text-gray-500"
                 >
                   FAQs
                 </a>
@@ -243,49 +251,49 @@ const Navbar = () => {
         </div>
 
         {/* User Login / Dropdown */}
-        <div className="mt-4 sm:mt-3 flex items-center ml-3">
-          {user ? (
-            <div className="relative">
-              <button
-                onClick={() => setUserDropdownVisible(!userDropdownVisible)}
-                className="text-gray-400 hover:text-white text-lg font-bold px-5 py-3 transition-colors duration-200 flex items-center select-none"
-              >
-                {user.fullName || user.email}
-                <FaChevronDown
-                  className={`ml-2 transition-transform duration-200 ${
-                    userDropdownVisible ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
+        <div className="mt-4 sm:mt-3 flex items-center pl-15">
+  {user ? (
+    <div className="relative">
+      <button
+        onClick={() => setUserDropdownVisible(!userDropdownVisible)}
+        className="text-gray-400 hover:text-white text-lg font-bold px-5 py-3 transition-colors duration-200 flex items-center select-none w-full sm:w-auto"
+      >
+        {user.fullName || user.email}
+        <FaChevronDown
+          className={`ml-2 transition-transform duration-200 ${
+            userDropdownVisible ? "rotate-180" : ""
+          }`}
+        />
+      </button>
 
-              {userDropdownVisible && (
-                <div className="absolute right-1 mt-2 w-40 bg-white border  border-gray-200 rounded shadow-md z-10 ">
-                  {user.email === "izuchukwuonuoha6@gmail.com" && (
-                    <a
-                      href="/admin-dashboard"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    >
-                      Admin Dashboard
-                    </a>
-                  )}
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-                  >
-                    Logout
-                  </button>
-                </div>
-              )}
-            </div>
-          ) : (
-            <button
-              onClick={() => navigate("/login")}
-              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition select-none left-20"
+      {userDropdownVisible && (
+        <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded shadow-md z-50">
+          {user.email === "izuchukwuonuoha6@gmail.com" && (
+            <a
+              href="/admin-dashboard"
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
             >
-              Login
-            </button>
+              Admin Dashboard
+            </a>
           )}
+          <button
+            onClick={handleLogout}
+            className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+          >
+            Logout
+          </button>
         </div>
+      )}
+    </div>
+  ) : (
+    <button
+      onClick={() => navigate("/login")}
+      className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition select-none w-full sm:w-auto"
+    >
+      Login
+    </button>
+  )}
+</div>
       </div>
     </nav>
   );
