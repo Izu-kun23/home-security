@@ -251,52 +251,51 @@ const Navbar = () => {
         </div>
 
         {/* User Login / Dropdown */}
-        <div className="mt-4 sm:mt-3 flex items-center pl-15">
-  {user ? (
-    <div className="relative">
-      <button
-        onClick={() => setUserDropdownVisible(!userDropdownVisible)}
-        className="text-gray-400 hover:text-white text-lg font-bold px-5 py-3 transition-colors duration-200 flex items-center select-none w-full sm:w-auto"
-      >
-        {user.fullName || user.email}
-        <FaChevronDown
-          className={`ml-2 transition-transform duration-200 ${
-            userDropdownVisible ? "rotate-180" : ""
-          }`}
-        />
-      </button>
+       <div className="mt-4 sm:mt-3 flex items-center pl-15">
+          {user ? (
+            <div className="relative">
+              <button
+                onClick={() => setUserDropdownVisible(!userDropdownVisible)}
+                className="text-gray-400 hover:text-white text-lg font-bold px-5 py-3 transition-colors duration-200 flex items-center select-none"
+              >
+                {user.fullName || user.email}
+                <FaChevronDown
+                  className={`ml-2 transition-transform duration-200 ${
+                    userDropdownVisible ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
 
-      {userDropdownVisible && (
-        <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded shadow-md z-50">
-          {user.email === "izuchukwuonuoha6@gmail.com" && (
-            <a
-              href="/admin-dashboard"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              {userDropdownVisible && (
+                <div className="absolute right-1 mt-2 w-40 bg-white border  border-gray-200 rounded shadow-md z-10 ">
+                  {user.email === "izuchukwuonuoha6@gmail.com" && (
+                    <a
+                      href="/admin-dashboard"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      Admin Dashboard
+                    </a>
+                  )}
+                  <button
+                    onClick={handleLogout}
+                    className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <button
+              onClick={() => navigate("/login")}
+              className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition select-none left-20"
             >
-              Admin Dashboard
-            </a>
+              Login
+            </button>
           )}
-          <button
-            onClick={handleLogout}
-            className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
-          >
-            Logout
-          </button>
         </div>
-      )}
-    </div>
-  ) : (
-    <button
-      onClick={() => navigate("/login")}
-      className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition select-none w-full sm:w-auto"
-    >
-      Login
-    </button>
-  )}
-</div>
       </div>
     </nav>
   );
 };
-
 export default Navbar;
