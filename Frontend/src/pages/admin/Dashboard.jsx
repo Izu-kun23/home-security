@@ -25,7 +25,7 @@ const Dashboard = () => {
 
   return (
     <div className="p-6">
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-9 mt-14">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-9 mt-15 pt-2">
         {/* Users Card */}
         <DashboardCard
           title="Users"

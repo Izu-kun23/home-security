@@ -15,11 +15,11 @@ const AdminHeader = () => {
   };
 
   return (
-    <div className="bg-black text-white py-1 pb-3 fixed top-0 left-[250px] right-0 z-10 shadow-lg">
+    <div className="bg-black text-white py-1 pb-1 fixed top-0 left-[250px] right-0 z-10 shadow-lg ">
       <div className="flex justify-between items-center h-20 px-10">
         {/* Logo */}
         <div className="flex items-center gap-4 ">
-          <img src={HamburgerIcon} alt="Logo" className="w-[30px]" />
+          
         </div>
 
         {/* Search Bar */}

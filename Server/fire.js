@@ -240,6 +240,83 @@ export const fetchProductCount = async () => {
   }
 };
 
+export const addToCart = async (userId, product, quantity = 1) => {
+  try {
+    const cartRef = collection(db, "cart");
+
+    // Check if this product is already in the user's cart
+    const q = query(
+      cartRef,
+      where("userId", "==", userId),
+      where("productId", "==", product.id)
+    );
+    const snapshot = await getDocs(q);
+
+    if (!snapshot.empty) {
+      // Product already in cart — update quantity
+      const existingDoc = snapshot.docs[0];
+      const currentQuantity = existingDoc.data().quantity || 1;
+      await updateDoc(doc(db, "cart", existingDoc.id), {
+        quantity: currentQuantity + quantity,
+        updatedAt: new Date().toISOString()
+      });
+    } else {
+      // Product not in cart — add new
+      await addDoc(cartRef, {
+        userId,
+        productId: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        quantity,
+        createdAt: new Date().toISOString()
+      });
+    }
+
+    console.log("Added to cart");
+  } catch (error) {
+    console.error("Failed to add to cart:", error);
+    throw error;
+  }
+};
+
+export const fetchCartByUser = async (userId) => {
+  try {
+    const q = query(collection(db, "cart"), where("userId", "==", userId));
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  } catch (error) {
+    console.error("Failed to fetch cart items:", error);
+    return [];
+  }
+};
+
+// Correct version to be used inside components
+export const updateCartQuantity = async (cartItemId, newQuantity) => {
+  try {
+    const cartItemRef = doc(db, "cart", cartItemId);
+    await updateDoc(cartItemRef, {
+      quantity: newQuantity,
+      updatedAt: new Date().toISOString(),
+    });
+    console.log("Quantity updated in Firestore");
+  } catch (error) {
+    console.error("Error updating quantity:", error);
+    throw error;
+  }
+};
+
+export const deleteCartItem = async (cartItemId) => {
+  try {
+    const ref = doc(db, "cart", cartItemId);
+    await deleteDoc(ref);
+    console.log("Cart item deleted successfully.");
+  } catch (error) {
+    console.error("Error deleting cart item:", error);
+    throw error;
+  }
+};
+
 // Login function
 export const loginUser = async (email, password) => {
   try {

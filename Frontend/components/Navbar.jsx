@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaSearch, FaChevronDown } from "react-icons/fa";
+import { FaSearch, FaChevronDown, FaCartPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import useAuth from "../../Server/utils/useAuth";
@@ -8,6 +8,7 @@ import {
   fetchCategories,
   fetchProductsByCategory,
 } from "../../Server/fire";
+import { useCart } from "../src/context/CartContext"; // Import the Cart Context hook
 
 const dropdownVariants = {
   hidden: { opacity: 0, y: -20, scale: 0.95, height: 0 },
@@ -30,6 +31,7 @@ const dropdownVariants = {
 const Navbar = () => {
   const navigate = useNavigate();
   const { user, loading } = useAuth();
+  const { cartCount } = useCart(); // Access the cart count from CartContext
 
   const [userDropdownVisible, setUserDropdownVisible] = useState(false);
   const [shopDropdownVisible, setShopDropdownVisible] = useState(false);
@@ -79,8 +81,17 @@ const Navbar = () => {
     <nav className="w-full bg-black shadow-md px-8 py-3 flex justify-between items-center z-50 relative">
       {/* Left */}
       <div className="flex items-center gap-6">
-        <button className="text-gray-400 hover:text-white text-xl">
-          <FaSearch />
+        <button
+          onClick={() => navigate("/cart")}
+          className="text-gray-400 hover:text-white text-3xl pl-3 relative"
+        >
+          <FaCartPlus />
+          {/* Display cart count badge */}
+          {cartCount > 0 && (
+            <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">
+              {cartCount}
+            </span>
+          )}
         </button>
       </div>
 

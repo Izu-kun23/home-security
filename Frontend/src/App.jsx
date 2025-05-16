@@ -23,6 +23,12 @@ import AddCategory from "./pages/admin/AddCategory";
 import AllProducts from "./pages/client/AllProducts";
 import AboutUs from "./pages/client/AboutUs";
 import Faqs from "./pages/client/Faqs";
+import ProductDetail from "./pages/client/ProductDetail";
+import Cart from "./pages/client/Cart";
+
+import { CartProvider } from "../src/context/CartContext"; // Adjust path if necessary
+
+
 
 const AppLayout = () => {
   const location = useLocation();
@@ -60,6 +66,8 @@ const AppLayout = () => {
               <Route path="/all-products" element={<AllProducts />} />
               <Route path="/about-us" element={<AboutUs />} />
               <Route path="/support/faqs" element={<Faqs />} />
+              <Route path="/product/:productId" element={<ProductDetail />} />
+              <Route path="/cart" element={<Cart />} />
 
             </Routes>
           </div>
@@ -74,7 +82,9 @@ const AppLayout = () => {
 const App = () => {
   return (
     <Router>
-      <AppLayout />
+        <CartProvider>
+        <AppLayout />
+      </CartProvider>
     </Router>
   );
 };
