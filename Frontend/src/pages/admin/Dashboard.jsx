@@ -1,32 +1,38 @@
 import React, { useState, useEffect } from "react";
 import DashboardCard from "../../../components/DashCards";
 import { FiUsers, FiBox, FiShoppingCart } from "react-icons/fi";
-import { fetchProductCount } from "../../../../Server/fire"; // Import your fetch function
+import { fetchProductCount } from "../../../../Server/fire"; // Your fetch function
 
 const Dashboard = () => {
-  const [productCount, setProductCount] = useState(0); // State to hold product count
-  const [loading, setLoading] = useState(true); // Loading state to handle async fetch
+  const [productCount, setProductCount] = useState(0);
+  const [loading, setLoading] = useState(true);
 
-  // Fetch the product count from Firestore
+  // Mock order data (replace this with actual fetch logic when needed)
+  const mockOrders = [
+    { id: "ORD-001", customer: "Jane Doe", total: "$299", status: "Shipped", date: "2024-05-01" },
+    { id: "ORD-002", customer: "John Smith", total: "$120", status: "Pending", date: "2024-05-03" },
+    { id: "ORD-003", customer: "Alice Johnson", total: "$560", status: "Delivered", date: "2024-05-05" },
+  ];
+
   useEffect(() => {
     const loadProductCount = async () => {
       try {
         const count = await fetchProductCount();
-        setProductCount(count); // Set the product count in state
+        setProductCount(count);
       } catch (error) {
         console.error("Failed to fetch product count", error);
       } finally {
-        setLoading(false); // Stop loading after the data is fetched
+        setLoading(false);
       }
     };
 
     loadProductCount();
-  }, []); // Empty dependency array ensures this runs once when the component mounts
+  }, []);
 
   return (
     <div className="p-6">
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-9 mt-15 pt-2">
-        {/* Users Card */}
+      {/* Dashboard Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-9 mt-4 pt-9">
         <DashboardCard
           title="Users"
           value="1,200"
@@ -34,21 +40,17 @@ const Dashboard = () => {
           icon={FiUsers}
           color="text-green-600"
           bgColor="bg-green-100"
-          hoverEffect="hover:shadow-lg hover:bg-green-200" // Added hover effect
+          hoverEffect="hover:shadow-lg hover:bg-green-200"
         />
-        
-        {/* Products Card */}
         <DashboardCard
           title="Products"
-          value={loading ? "Loading..." : productCount} // Show loading until the product count is fetched
+          value={loading ? "Loading..." : productCount}
           percentage="2.4%"
           icon={FiBox}
           color="text-blue-600"
           bgColor="bg-blue-100"
-          hoverEffect="hover:shadow-lg hover:bg-blue-200" // Added hover effect
+          hoverEffect="hover:shadow-lg hover:bg-blue-200"
         />
-        
-        {/* Orders Card */}
         <DashboardCard
           title="Orders"
           value="98"
@@ -56,8 +58,51 @@ const Dashboard = () => {
           icon={FiShoppingCart}
           color="text-purple-600"
           bgColor="bg-purple-100"
-          hoverEffect="hover:shadow-lg hover:bg-purple-200" // Added hover effect
+          hoverEffect="hover:shadow-lg hover:bg-purple-200"
         />
+      </div>
+
+      {/* Orders Table */}
+      <div className="mt-14 bg-white shadow-md rounded-lg overflow-hidden ">
+        <div className="p-5 border-b border-gray-200">
+          <h2 className="text-xl font-semibold text-gray-700">Recent Orders</h2>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="min-w-full text-sm text-left">
+            <thead className="bg-gray-100 text-gray-600 uppercase tracking-wider">
+              <tr>
+                <th className="px-6 py-3">Order ID</th>
+                <th className="px-6 py-3">Customer</th>
+                <th className="px-6 py-3">Total</th>
+                <th className="px-6 py-3">Status</th>
+                <th className="px-6 py-3">Date</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {mockOrders.map((order) => (
+                <tr key={order.id}>
+                  <td className="px-6 py-4 font-medium text-gray-900">{order.id}</td>
+                  <td className="px-6 py-4">{order.customer}</td>
+                  <td className="px-6 py-4">{order.total}</td>
+                  <td className="px-6 py-4">
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                        order.status === "Shipped"
+                          ? "bg-blue-100 text-blue-700"
+                          : order.status === "Delivered"
+                          ? "bg-green-100 text-green-700"
+                          : "bg-yellow-100 text-yellow-700"
+                      }`}
+                    >
+                      {order.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 text-gray-500">{order.date}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );
